@@ -20,7 +20,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.hepta.funcionarios.entity.Funcionario;
+import com.hepta.funcionarios.entity.Setor;
 import com.hepta.funcionarios.persistence.FuncionarioDAO;
+import com.hepta.funcionarios.persistence.SetorDaa;
+
+
+
+
 
 @Path("/funcionarios")
 public class FuncionarioService {
@@ -32,9 +38,11 @@ public class FuncionarioService {
 	private HttpServletResponse response;
 
 	private FuncionarioDAO dao;
+	private SetorDaa setorDao;
 
 	public FuncionarioService() {
 		dao = new FuncionarioDAO();
+		setorDao = new SetorDaa();
 	}
 
 	protected void setRequest(HttpServletRequest request) {
@@ -46,13 +54,31 @@ public class FuncionarioService {
 	 * 
 	 * @param Funcionario: Novo Funcionario
 	 * @return response 200 (OK) - Conseguiu adicionar
+	 * @throws Exception 
 	 */
-	@Path("/")
+	@Path("/{idSetor}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@POST
-	public Response FuncionarioCreate(Funcionario Funcionario) {
-		return Response.status(Status.NOT_IMPLEMENTED).build();
+	public Response FuncionarioCreate(@PathParam("idSetor") Integer id ,Funcionario json) throws Exception {
+		
+		Funcionario funcionario = new Funcionario();
+		Setor setor = new Setor();
+		
+		setor = setorDao.find(id);
+		
+		funcionario.setSetor(setor);
+		funcionario.setNome(json.getNome());
+		funcionario.setEmail(json.getEmail());
+		funcionario.setIdade(json.getIdade());
+		funcionario.setSalario(json.getSalario());
+
+		try {
+			dao.save(funcionario);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(Status.OK).build();
 	}
 
 	/**
@@ -88,7 +114,27 @@ public class FuncionarioService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@PUT
 	public Response FuncionarioUpdate(@PathParam("id") Integer id, Funcionario Funcionario) {
-		return Response.status(Status.NOT_IMPLEMENTED).build();
+
+		Funcionario buscar = new Funcionario();
+
+		try {
+			buscar = dao.find(id);
+			buscar.setNome(Funcionario.getNome());
+			buscar.setEmail(Funcionario.getEmail());
+			buscar.setIdade(Funcionario.getIdade());
+			buscar.setSalario(Funcionario.getSalario());
+
+			dao.update(buscar);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+
+		GenericEntity<Funcionario> entity = new GenericEntity<Funcionario>(buscar) {
+		};
+
+		return Response.status(Status.OK).entity(entity).build();
 	}
 
 	/**
@@ -101,7 +147,12 @@ public class FuncionarioService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@DELETE
 	public Response FuncionarioDelete(@PathParam("id") Integer id) {
-		return Response.status(Status.NOT_IMPLEMENTED).build();
+		try {
+			dao.delete(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(Status.OK).entity("usuario deletado").build();
 	}
 
 }
