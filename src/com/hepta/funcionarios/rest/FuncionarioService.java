@@ -114,7 +114,27 @@ public class FuncionarioService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@PUT
 	public Response FuncionarioUpdate(@PathParam("id") Integer id, Funcionario Funcionario) {
-		return Response.status(Status.NOT_IMPLEMENTED).build();
+
+		Funcionario buscar = new Funcionario();
+
+		try {
+			buscar = dao.find(id);
+			buscar.setNome(Funcionario.getNome());
+			buscar.setEmail(Funcionario.getEmail());
+			buscar.setIdade(Funcionario.getIdade());
+			buscar.setSalario(Funcionario.getSalario());
+
+			dao.update(buscar);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+
+		GenericEntity<Funcionario> entity = new GenericEntity<Funcionario>(buscar) {
+		};
+
+		return Response.status(Status.OK).entity(entity).build();
 	}
 
 	/**
