@@ -12,16 +12,42 @@
 </head>
 
 <body>
+<form name="meu_form">
 
 <a href="/funcionarios/index.html">Voltar</a>
+
 
 <div id="app">
 	<p>{{mensagem}}</p>
 	
 	<h4>Cadastro de funcionário</h4>
 		
-	<p>Implementar o cadastro de funcionário</p>	
+	<p>Implementar o cadastro de funcionário</p>
+	
+
+  <h1>Formularioo</h1>
+
+  <input type="text"  name="nome" v-model="nomeField" />
+  <label for="nome">Nome</label>
+
+  <input type="salario"  name="salario" v-model="salarioField"/>
+  <label for="salario">salario</label>
+
+  <input type="email"  name="email" v-model="emailField"/>
+  <label for="email">Email</label>
+  
+  <input type="idade"  name="idade" v-model="idadeField"/>
+  <label for="idade">idade</label>
+  
+   <input type="setor"  name="setor" v-model="setorField">
+  <label for="setor">setor</label>
+
+ 
+	<button  @click="cadastrarFuncionario">Cadastrar</button>
+  
+
 </div>
+</form>	
 
 	<script src="resources/js/vue.js"></script>
 	<script src="resources/js/axios.min.js"></script>
