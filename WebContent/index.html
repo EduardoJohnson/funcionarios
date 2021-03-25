@@ -23,18 +23,18 @@
 			<th>Salário</th>
 			<th>Email</th>
 			<th>Idade</th>
-			<th></th>
-			<th></th>
+			<th>update</th>
+			<th>delete</th>
 		  </tr>
-		  <tbody id="event-table" >
+		  <tbody id="event-table">
 			<tr v-for="funcionario in listaProdutos">
 			  <td>{{ funcionario.nome }}</td> 
-			  <td>{{ funcionario.setor.nome }}</td> 
+			  <td>{{funcionario.setor}}</td>
 			  <td>{{ funcionario.salario }}</td> 
 			  <td>{{ funcionario.email }}</td> 
 			  <td>{{ funcionario.idade }}</td>
-			  <td><span @click="">&#9998;</span>
-				<span  @click="">&#10006;</span>
+			  <td><button> <span  @click="">&#9998;</span></button>
+				<button>  <span @click="">&#10006;</span></button>
 			  </td>
 			</tr>
 		  </tbody>
